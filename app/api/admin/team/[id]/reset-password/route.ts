@@ -5,6 +5,8 @@ import { requireSuperAdmin } from '@/lib/super-admin-check'
 import { generateSecurePassword, hashPassword, validatePassword } from '@/lib/password-utils'
 import { resetPasswordSchema } from '@/lib/team-validation'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: Request, { params }: { params: { id: string } }) {
   const session = await auth()
   if (!session?.user) {

@@ -6,6 +6,8 @@ import { requireSuperAdmin } from '@/lib/super-admin-check'
 import { ALL_PERMISSION_NAMES } from '@/lib/permission-definitions'
 import { hashPassword } from '@/lib/password-utils'
 
+export const dynamic = 'force-dynamic'
+
 async function ensurePermissionRows() {
   await Promise.all(
     ALL_PERMISSION_NAMES.map((name) =>

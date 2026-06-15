@@ -3,6 +3,8 @@ import { db } from '@/lib/db'
 import { auth } from '@/auth'
 import { requireSuperAdmin } from '@/lib/super-admin-check'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(_request: Request, { params }: { params: { id: string } }) {
   const session = await auth()
   if (!session?.user) {

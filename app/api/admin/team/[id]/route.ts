@@ -4,6 +4,8 @@ import { auth } from '@/auth'
 import { updateTeamMemberSchema, validatePermissions } from '@/lib/team-validation'
 import { requireSuperAdmin } from '@/lib/super-admin-check'
 
+export const dynamic = 'force-dynamic'
+
 async function syncPermissions(teamMemberId: number, permissions: Record<string, boolean>) {
   const activePermissions = Object.entries(permissions).filter(([, enabled]) => enabled).map(([permission]) => permission)
 
