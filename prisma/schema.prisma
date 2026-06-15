@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LeadStatus {
+  new
+  contacted
+  converted
+  lost
+}
+
+enum AdminRole {
+  admin
+  moderator
+}
+
+enum TeamMemberStatus {
+  ACTIVE
+  DISABLED
+}
+
+model Lead {
+  id                Int         @id @default(autoincrement())
+  name              String
+  email             String      @unique
+  phone             String?
+  company           String?
+  serviceInterested  String
+  message           String
+  budget            String?
+  status            LeadStatus  @default(new)
+  source            String      @default("homepage form")
+  notes             String?
+  isQuoteRequest    Boolean     @default(false)
+  requestedServices Json?
+  timeline          String?
+  followUpAt        DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  @@index([status])
+  @@index([source])
+  @@index([createdAt])
+  @@index([name])
+  @@index([email])
+}
+
+model NewsletterSubscriber {
+  id               Int      @id @default(autoincrement())
+  email            String   @unique
+  subscriptionDate DateTime @default(now())
+  active           Boolean  @default(true)
+}
+
+model AdminUser {
+  id                 Int         @id @default(autoincrement())
+  email              String      @unique
+  password           String
+  name               String
+  role               AdminRole   @default(moderator)
+  isSuperAdmin       Boolean     @default(false)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  teamMembersCreated  TeamMember[] @relation("TeamMembersCreatedBy")
+}
+
+model TeamMember {
+  id               Int                    @id @default(autoincrement())
+  email            String                 @unique
+  name             String
+  password         String
+  status           TeamMemberStatus       @default(ACTIVE)
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  createdByAdminId Int
+  createdByAdmin   AdminUser              @relation("TeamMembersCreatedBy", fields: [createdByAdminId], references: [id], onDelete: Restrict)
+  permissions      TeamMemberPermission[]
+
+  @@index([email])
+  @@index([status])
+  @@index([createdByAdminId])
+}
+
+model Permission {
+  id            Int                    @id @default(autoincrement())
+  name          String                 @unique
+  category      String
+  description   String
+  defaultEnabled Boolean               @default(false)
+  teamMembers   TeamMemberPermission[]
+}
+
+model TeamMemberPermission {
+  id            Int          @id @default(autoincrement())
+  teamMemberId  Int
+  permissionId  Int
+  enabled       Boolean      @default(true)
+  grantedAt     DateTime     @default(now())
+
+  teamMember    TeamMember   @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  permission    Permission   @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([teamMemberId, permissionId])
+  @@index([permissionId])
+}
