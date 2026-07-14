@@ -37,6 +37,15 @@ Digital ARMSS is a modern digital marketing and lead management platform built t
 - Advanced Analytics Dashboard
 - AI Lead Scoring
 - CRM Integrations
+
+## Future Roadmap
+
+- WhatsApp Lead Capture
+- AI Lead Scoring
+- CRM Integration
+- Advanced Analytics Dashboard
+- Multi-language Support
+
 ## Installation
 
 ```bash
