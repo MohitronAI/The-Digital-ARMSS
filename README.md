@@ -31,6 +31,12 @@ Digital ARMSS is a modern digital marketing and lead management platform built t
 - Resend Email API
 - Neon Database
 
+## Future Improvements
+
+- WhatsApp Lead Capture
+- Advanced Analytics Dashboard
+- AI Lead Scoring
+- CRM Integrations
 ## Installation
 
 ```bash
